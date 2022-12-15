@@ -1,0 +1,454 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    user-select: none;
+    .top {
+        width: 100vw;
+        height: 35vh;
+        position: relative;
+        .colorCard {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 9;
+            width: 100%;
+            height: 100%;
+            span {
+                position: absolute;
+                z-index: 10;
+                top: 40%;
+                right: 50vw;
+                transform: translateX(50%);
+                display: inline-block;
+                padding: 12px 20px;
+                border-radius: 50%;
+                background-color: #ffffff99;
+            }
+        }
+        .left, .right, .like {
+            position: absolute;
+            top: 70%;
+            background-color: rgba(255, 255, 255, 0.6);
+            padding: 0 20px 5px 20px;
+            border-radius: 30px;
+            z-index: 11;
+            font-size: 30px;
+            cursor: pointer;
+            transition: ease 0.2s;
+            &:hover {
+                background-color: white;
+            }
+            &:active {
+                background-color: black;
+                color: white;
+            }
+        }
+        .left {
+            left: 35vw;
+        }
+        .like {
+            left: 50vw;
+            color: rgb(203, 0, 68);
+            transform: translateX(-50%);
+        }
+        .right {
+            right: 35vw;
+        }
+    }
+    .bottom {
+        background-color: white;
+        height: 65vh;
+        max-width: 100vw;
+        margin-bottom: 10px;
+        overflow-x: scroll;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        .line1 {
+            width: fit-content;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            .colorWheel {
+                position: relative;
+                height: fit-content;
+                width: fit-content;
+                padding-left: 15px;
+                .nameA {
+                    position: absolute;
+                    top: 10px;
+                    left: 30px;
+                }
+                .colorSlice {
+                    width: 200px;
+                    height: 1px;
+                    background-image: linear-gradient(to left, rgba(255, 255, 255, 0) 50%, black 50%);
+                    position: absolute;
+                    z-index: 1;
+                    top: 50%;
+                    left: 15px;
+                }
+                &::after {
+                    content: "0'";
+                    position: absolute;
+                    font-size: 12px;
+                    top: 93px;
+                    left: 3px;
+                    z-index: 2;
+                }
+                &::before {
+                    content: "90'";
+                    position: absolute;
+                    font-size: 12px;
+                    top: -16px;
+                    left: 110px;
+                    z-index: 2;
+                }
+            }
+            .colorSketch {
+                border-radius: 5px;
+                position: relative;
+                width: fit-content;
+                height: 174px;
+                overflow: hidden;
+                .lineB, .lineC {
+                    position: absolute;
+                    z-index: 1;
+                    background-color: rgba(0, 0, 0, 0.2);
+                    border: solid 0.5px rgba(255, 255, 255, 0.4);
+                }
+                .lineB {
+                    height: 175px;
+                    width: 2px;
+                    transform: translateX(-50%);
+                    top: 0;
+                }
+                .lineC {
+                    width: 220px;
+                    height: 2px;
+                    transform: translateY(-50%);
+                    left: 0;
+                }
+                .nameB {
+                    position: absolute;
+                    top: -4px;
+                    left: 50%;
+                    z-index: 2;
+                }
+                .nameC {
+                    position: absolute;
+                    top: 40%;
+                    right: 0;
+                    z-index: 2;
+                }
+                ._0_1, ._0_2, ._100 {
+                    position: absolute;
+                    font-size: 12px;
+                    z-index: 3;
+                }
+                ._0_1 {
+                    top: -4px;
+                    left: 5px;
+                }
+                ._0_2 {
+                    bottom: 5px;
+                    right: 0
+                }
+                ._100 {
+                    top: -4px;
+                    right: 0;
+                }
+            }
+        }
+        .line2 {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 20px 0;
+            min-width: 100px;
+            height: 100%;
+            .selectedColor {
+                width: calc((60vh - 40px) / 5);
+                height: calc((60vh - 40px) / 5);
+                border: solid 1px rgb(0, 0, 0);
+                border-radius: 50%;
+                text-align: center;
+            }
+        }
+        .line3 {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            min-width: 30vw;
+            height: 100%;
+            padding: 20px 0;
+            .waitingColor {
+                width: calc((60vh - 40px) / 5);
+                height: calc((60vh - 40px) / 5);
+                border-radius: 50%;
+                text-align: center;
+            }
+        }
+    }
+    .result {
+        max-width: 100vw;
+        height: calc(30vh + 20px);
+        overflow-x: scroll;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        .resultChild {
+            min-width: calc(30vh + 10px);
+        }
+        .fakeTop {
+            min-width: 150px;
+            height: 100%;
+            pointer-events: none;
+            position: relative;
+            .colorCard {
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 9;
+                width: 100%;
+                height: 100%;
+                span {
+                    position: absolute;
+                    z-index: 10;
+                    top: 10%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    display: inline-block;
+                    padding: 12px 20px;
+                    border-radius: 50%;
+                    background-color: #ffffff99;
+                }
+            }
+            .like {
+                position: absolute;
+                top: 70%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: rgb(203, 0, 68);
+                background-color: rgba(255, 255, 255, 0.6);
+                padding: 0 20px 5px 20px;
+                border-radius: 30px;
+                z-index: 11;
+                font-size: 30px;
+                transition: ease 0.2s;
+            }
+        }
+        .point {
+            z-index: 5;
+            position: absolute;
+            transform: translate(-35%, -45%);
+            font-size: 20px;
+            &::after {
+                content: "";
+                position: absolute;
+                z-index: -1;
+                background-color: rgb(255, 255, 255);
+                top: 28%;
+                left: 5%;
+                width: 13.5px;
+                height: 13.5px;
+                border-radius: 50%;
+            }
+        }
+        .nextPoint {
+            z-index: 4;
+            position: absolute;
+            font-size: 10px;
+            transform: translate(-50%, -50%);
+        }
+        .nowPoint {
+            position: absolute;
+            z-index: 4;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: solid 0.5px black;
+        }
+        .showA {
+            position: relative;
+            height: calc(30vh + 10px);
+            background-color: rgba(255, 255, 255, 0);
+            .point, .nextPoint {
+                transform: translate(calc(-35% + 5px), calc(-45% + 5px));
+            }
+            .colorSlice {
+                width: 30vh;
+                height: 1px;
+                background-image: linear-gradient(to left, rgba(255, 255, 255, 0) 50%, black 50%);
+                position: absolute;
+                z-index: 5;
+                top: 50%;
+                left: 5px;
+            }
+        }
+        //circle is inside the showA
+        .circle {
+            position: relative;
+            transform: translate(5px, 5px);
+            z-index: 1;
+            width: calc(30vh + 2px);
+            height: calc(30vh + 2px);
+            border: solid 1px black;
+            border-radius: 50%;
+            overflow: hidden;
+            &::after {
+                content: "";
+                position: absolute;
+                z-index: 3;
+                top: 50%;
+                left: 50%;
+                width: 4px;
+                height: 4px;
+                transform: translate(-50%, -50%);
+                background-color: black;
+                border-radius: 50%;
+            }
+            .filled {
+                position: absolute;
+                z-index: 2;
+                top: -50%;
+                left: -50%;
+                width: 60vh;
+                height: 60vh;
+                background-color: rgba(0, 0, 0, 0.8);
+            }
+            .red {
+                // background-color: rgb(255, 0, 0);
+                clip-path: polygon(50% 50%, 0% 36.6%, 0% 68.2%);
+            }
+            .orange {
+                // background-color: rgb(255, 166, 0);
+                clip-path: polygon(50% 50%, 0% 26.7%, 0% 50%);
+                transform: rotate(15deg);
+            }
+            .yellow {
+                // background-color: rgb(255, 255, 0);
+                clip-path: polygon(50% 50%, 0% 26.7%, 0% 50%);
+                transform: rotate(40deg);
+            }
+            .young_green {
+                // background-color: rgb(195, 255, 0);
+                clip-path: polygon(50% 50%, 0% 26.7%, 0% 50%);
+                transform: rotate(65deg);
+            }
+            .green {
+                // background-color: rgb(60, 255, 0);
+                clip-path: polygon(50% 50%, 36.6% 0%, 0% 50%);
+                transform: rotate(90deg);
+            }
+            .cyan {
+                // background-color: rgb(0, 255, 149);
+                clip-path: polygon(50% 50%, 0% 26.7%, 0% 50%);
+                transform: rotate(165deg);
+            }
+            .young_blue {
+                // background-color: rgb(0, 255, 251);
+                clip-path: polygon(50% 50%, 0% 31.8%, 0% 50%);
+                transform: rotate(190deg);
+            }
+            .blue {
+                // background-color: rgb(0, 0, 255);
+                clip-path: polygon(50% 50%, 8.05% 0%, 0% 50%);
+                transform: rotate(210deg);
+            }
+            .violet {
+                // background-color: rgb(111, 0, 255);
+                clip-path: polygon(50% 50%, 0% 26.7%, 0% 50%);
+                transform: rotate(260deg);
+            }
+            .pink {
+                // background-color: rgb(255, 0, 255);
+                clip-path: polygon(50% 50%, 0% 8.05%, 0% 50%);
+                transform: rotate(285deg);
+            }
+            .old_pink {
+                // background-color: rgb(255, 0, 174);
+                clip-path: polygon(50% 50%, 0% 36.4%, 0% 50%);
+                transform: rotate(325deg);
+            }
+        }
+        .showBC {
+            position: relative;
+            width: calc(30vh + 2px);
+            height: calc(30vh + 2px);
+            border: solid 1px black;
+            .resultLineB, .resultLineC {
+                position: absolute;
+                z-index: 1;
+                background-color: rgb(0, 0, 0);
+            }
+            .resultLineB {
+                height: calc(30vh + 2px);
+                width: 1px;
+                transform: translateX(-50%);
+                top: 0;
+            }
+            .resultLineC {
+                width: calc(30vh + 2px);
+                height: 1px;
+                transform: translateY(-50%);
+                left: 0;
+            }
+            .filled {
+                position: absolute;
+                background-color: rgba(0, 0, 0, 0.8);
+                z-index: 1;
+            }
+            .filledB1 {
+                left: 0;
+                width: calc(30vh * 0.12);
+            }
+            .filledB2 {
+                left: calc(30vh * 0.12);
+                width: calc(30vh * 0.3);
+            }
+            .filledB3 {
+                left: calc(30vh * 0.12 + 30vh * 0.3);
+                width: calc(30vh * 0.3);
+            }
+            .filledB4 {
+                left: calc(30vh * 0.12 + 30vh * 0.3 * 2);
+                width: calc(30vh * 0.28);
+            }
+            .filledC1 {
+                top: 0;
+                height: calc(30vh * 0.27);
+            }
+            .filledC2 {
+                top: calc(30vh * 0.27);
+                height: calc(30vh * 0.27);
+            }
+            .filledC3 {
+                top: calc(30vh * 0.27 * 2);
+                height: calc(30vh * 0.27);
+            }
+            .filledC4 {
+                top: calc(30vh * 0.27 * 3);
+                height: calc(30vh * 0.19);
+            }
+        }
+        .log {
+            min-width: 200px;
+            padding: 0 10px 0 0;
+            overflow: scroll;
+            p {
+                margin-bottom: 5px;
+            }
+            p:nth-child(odd) {
+                background-color: rgb(218, 218, 218);
+            }
+        }
+    }
+}
