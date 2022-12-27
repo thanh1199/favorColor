@@ -6,10 +6,20 @@ function pick (hsv = {h: [-1], s: [-1], v: [-1]}) {
   const A = dictA()
   const BC = dictBC()
   const HSV = [0, 0, 0]
-  var check = {h: false, s: false, v: false}
   if (hsv.h[0] === -1) hsv.h = [0,1,2,3,4,5,6,7,8,9,10]
-  if (hsv.s[0] === -1) hsv.s = [0,1,2,3]
-  if (hsv.v[0] === -1) hsv.v = [0,1,2,3]
+  if (hsv.s[0] === -1) hsv.s = [0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3]
+  if (hsv.v[0] === -1) hsv.v = [0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3]
+
+  if (hsv.s.length !== hsv.v.length) {
+    console.log("!!! ERROR s-v in pick file")
+    var i
+    if (hsv.s.length > hsv.v.length) {
+      for (i = 0; i < hsv.s.length - hsv.v.length; i++) hsv.v.push(0)
+    }
+    if (hsv.v.length > hsv.s.length) {
+      for (i = 0; i < hsv.v.length - hsv.s.length; i++) hsv.s.push(0)
+    }
+  }
 
   const hArea = hsv.h.map(h => {
     const area = []
@@ -25,40 +35,28 @@ function pick (hsv = {h: [-1], s: [-1], v: [-1]}) {
   const hMax = Math.max(...hNum)
   const hMin = Math.min(...hNum)
   const deltaH = hMax - hMin + 1
-  while (!check.h) {
+  const checkH = [false]
+  while (!checkH[0]) {
     HSV[0] = Math.floor(Math.random() * deltaH) + hMin
     hArea.forEach(h => {
       h.forEach(num => {
-        if (HSV[0] >= num[0] && HSV[0] <= num[1]) check.h = true
+        if (HSV[0] >= num[0] && HSV[0] <= num[1]) checkH[0] = true
       })
     })
   }
 
-  const sArea = hsv.s.map(s => BC[0][s].B)
-  var sNum = []
-  sArea.forEach(s => sNum = [...sNum, ...s])
-  const sMax = Math.max(...sNum)
-  const sMin = Math.min(...sNum)
-  const deltaS = sMax - sMin + 1
-  while (!check.s) {
-    HSV[1] = Math.floor(Math.random() * deltaS) + sMin
-    sArea.forEach(s => {
-      if (HSV[1] >= s[0] && HSV[1] <= s[1]) check.s = true
-    })
-  }
 
-  const vArea = hsv.v.map(v => BC[v][0].C)
-  var vNum = []
-  vArea.forEach(v => vNum = [...vNum, ...v])
-  const vMax = Math.max(...vNum)
-  const vMin = Math.min(...vNum)
-  const deltaV = vMax - vMin + 1
-  while (!check.v) {
-    HSV[2] = Math.floor(Math.random() * deltaV) + vMin
-    vArea.forEach(v => {
-      if (HSV[2] >= v[0] && HSV[2] <= v[1]) check.v = true
-    })
-  }
+  const index = Math.floor(Math.random() * hsv.s.length)
+  const s = hsv.s[index]
+  const v = hsv.v[index]
+
+  const sArea = BC[0][s].B
+  const deltaS = sArea[1] - sArea[0] + 1
+  HSV[1] = Math.floor(Math.random() * deltaS) + sArea[0]
+
+  const vArea = BC[v][0].C
+  const deltaV = vArea[1] - vArea[0] + 1
+  HSV[2] = Math.floor(Math.random() * deltaV) + vArea[0]
 
   return hsv2rgb(HSV)
 }

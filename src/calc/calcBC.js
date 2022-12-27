@@ -13,6 +13,18 @@ function indexC (v) {
     if (v > 19) {return 2}
     return 3
 }
+function calcNeighbor (c, b) {
+    const result = []
+    if (c - 1 >= 0 && b - 1 >= 0) result.push([c - 1, b - 1]) 
+    if (c - 1 >= 0) result.push([c - 1, b]) 
+    if (c - 1 >= 0 && b + 1 <= 3) result.push([c - 1, b + 1]) 
+    if (b - 1 >= 0) result.push([c, b - 1]) 
+    if (c + 1 <= 3 && b - 1 >= 0) result.push([c + 1, b - 1]) 
+    if (c + 1 <= 3) result.push([c + 1, b]) 
+    if (c + 1 <= 3 && b + 1 <= 3) result.push([c + 1, b + 1]) 
+    if (b + 1 <= 3) result.push([c, b + 1]) 
+    return [...result]
+}
 
 function calcBC ( liked = [
     [-1, -1, -1], 
@@ -36,32 +48,38 @@ function calcBC ( liked = [
             opacity[c][b] +=  weight
         }
     })
-    const opacityB = [0, 0, 0, 0]
-    const opacityC = [0, 0, 0, 0]
-    opacity.forEach((bc, i) => {
-        bc.forEach((b, j) => {
-            opacityB[j] += b
-            opacityC[i] += b
+    const center = []
+    const neighbor = []
+    opacity.forEach((c, i) => {
+        c.forEach((b, j) => {
+            if (b > 0.1) center.push([i, j])
+            if (b > 0.2) center.push([i, j])
+            if (b > 0.3) {
+                center.push([i, j])
+                calcNeighbor(i, j).forEach(nei => neighbor.push(nei))
+            }
         })
     })
-    const neighbor = [[1], [0, 2], [1, 3], [2]]
-    const centerB = []
-    opacityB.forEach((b, i) => {
-        if (b > 0.3) centerB.push({id: i, neighbor: neighbor[i]})
-    }) 
-    const centerC = []
-    opacityC.forEach((c, i) => {
-        if (c > 0.3) centerC.push({id: i, neighbor: neighbor[i]})
+    const outsideValue = neighbor.filter(nei => {
+        var yes = true
+        center.forEach(cen => {
+            if (cen[0] === nei[0] && cen[1] === nei[1]) yes = false
+        })
+        return yes
     })
-    if (liked[2][0] < 0) return {
-        opacity: [...opacity],
-        centerB: [],
-        centerC: []
-    }
+
+    const check = []
+    outsideValue.forEach((o, i) => {
+        check.push(true)
+        for (var j = i + 1; j < outsideValue.length - 1; j++) {
+            if (o[0] === outsideValue[j][0] && o[1] === outsideValue[j][1]) check[i] = false
+        }
+    })
+    const outside = outsideValue.filter((o, i) => check[i])
     return {
         opacity: [...opacity],
-        centerB: centerB,
-        centerC: centerC
+        center: [...center],
+        outside: [...outside]
     }
 }
 

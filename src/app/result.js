@@ -31,11 +31,10 @@ function Result () {
     const r = history[index].value[0]
     const g = history[index].value[1]
     const b = history[index].value[2]
-    
     const A = calcA(likedColors)
     const opacityA = [0,0,0,0,0,0,0,0,0,0,0]
     A.opacity.forEach(a => opacityA[a.id] = a.weight)
-    
+
     const BC = calcBC(likedColors)
     const opacityBC = BC.opacity
     const childrenBC = []
@@ -63,13 +62,13 @@ function Result () {
         })
     })
     
-    const newRule = JSON.stringify(calcRule(A.center, BC.centerB, BC.centerC))
+    const newRule = JSON.stringify(calcRule(A.center, A.outside, BC.center, BC.outside))
     useEffect(() => {
         dispatch(updateNextColorRule(JSON.parse(newRule)))
         dispatch(updateNextColor(JSON.parse(newRule)))
     }, [dispatch, newRule])
 
-    const logParameter = JSON.stringify([A.center, BC.centerB, BC.centerC, noLike]) 
+    const logParameter = JSON.stringify([A.center, BC.center, noLike]) 
     useEffect(() => {
         dispatch(updateLog(JSON.parse(logParameter)))
     }, [dispatch, logParameter])

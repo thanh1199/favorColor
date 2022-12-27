@@ -13,15 +13,17 @@ function calcA ( liked = [
     if (liked[2][0] < 0) {
         return {
             opacity: [],
-            center: []
+            center: [],
+            outside: []
         }
     }
-    const h5 = {value: Math.round(rgb2hsv(liked[0])[0]), weight: 5}
-    const h4 = {value: Math.round(rgb2hsv(liked[1])[0]), weight: 4}
-    const h3 = {value: Math.round(rgb2hsv(liked[2])[0]), weight: 3}
-    const h2 = {value: Math.round(rgb2hsv(liked[3])[0]), weight: 2}
-    const h1 = {value: Math.round(rgb2hsv(liked[4])[0]), weight: 1}
-    const hueArr = [h5, h4, h3, h2, h1]
+    const hueArr = []
+    liked.forEach((like, i) => {
+        if (like[0] > -1) hueArr.push(
+            {value: Math.round(rgb2hsv(like)[0]), weight: 5 - i}
+        )
+    })
+    
     const num = hueArr.length
     var bestArc = 360
     var subHueArr = hueArr.map((h) => h.value)
@@ -35,12 +37,7 @@ function calcA ( liked = [
         const arc = max - minAfter
         bestArc = bestArc > arc ? arc : bestArc
     }
-    if (bestArc > 180) {
-        return {
-            opacity: [],
-            center: []
-        }
-    }
+    
     dict.forEach((d) => {
         hueArr.forEach((h) => {
             if (d.value[0] <= h.value && h.value <= d.value[1]) {
@@ -64,17 +61,38 @@ function calcA ( liked = [
     })
 
     const center = []
-    const neighbor = [
+    const neighbor = []
+    const neighborDict = [
         [10, 1], [0, 2], [1, 3], [2, 4],
         [3, 5], [4, 6], [5, 7], [6, 8],
         [7, 9], [8, 10], [9, 0]
     ]
     result.forEach((c) => {
-        if (c.weight > 0.3) center.push({id: c.id, neighbor: neighbor[c.id]})
+        if (c.weight > 0.1) center.push(c.id)
+        if (c.weight > 0.3) {
+            neighborDict[c.id].forEach(nei => neighbor.push(nei))
+        }
     })
+    const outsideValue = neighbor.filter(nei => {
+        var yes = true
+        center.forEach(cen => {
+            if (cen === nei) yes = false 
+        })
+        return yes
+    })
+    const check = []
+    outsideValue.forEach((o, i) => {
+        check.push(true)
+        for (var j = i + 1; j < outsideValue.length - 1; j++) {
+            if (o === outsideValue[j]) check[i] = false
+        }
+    })
+    const outside = outsideValue.filter((o, i) => check[i])
+    if (outside.length === 0) center.forEach(cen => outside.push(cen))
     return {
-        opacity: liked[4][0] < 0 ? [] : [...result],
-        center: center.length === 0 ? [] : [...center]
+        opacity: liked[4][0] < 0 || bestArc > 180 ? [] : [...result],
+        center: [...center],
+        outside: [...outside]
     }
 }
 

@@ -14,14 +14,18 @@ export const likeSlice = createSlice({
   initialState,
   reducers: {
     toLike: (state, action) => {
-        state.pop()
-        state.unshift(action.payload)
+      state.pop()
+      state.unshift(action.payload)
     },
     toDislike: (state, action) => {
-        const removed = action.payload[0]
-        const otherLiked = action.payload[1]
-        const newState = state.filter(c => c[0] !== removed[0] && c[1] !== removed[1] && c[2] !== removed[2])
-        return [...newState, otherLiked]
+      const removed = action.payload[0]
+      const otherLiked = action.payload[1]
+      const newState = state.filter(c => !(c[0] === removed[0] && c[1] === removed[1] && c[2] === removed[2]))
+      newState.push(otherLiked)
+      for (var i = newState.length; i < 5; i++) {
+        newState.push([-1, -1, -1])
+      }
+      return [...newState]
     }
   },
 });

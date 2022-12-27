@@ -46,13 +46,11 @@ function Top () {
         dispatch(changeLike(index))
         if (history[index].like) {
             const remove = history[index].value
-            const exist = likedColors.find(c => {
-                if (
-                    c[0] === remove[0] && 
-                    c[1] === remove[1] && 
-                    c[2] === remove[2]
-                ) {return true} else {return false}
-            })
+            const exist = likedColors.find(c => 
+                c[0] === remove[0] && 
+                c[1] === remove[1] && 
+                c[2] === remove[2]
+            )
             if (exist) {
                 const otherLiked = history.filter(c => {
                     var yes = true
@@ -65,7 +63,7 @@ function Top () {
                                 c1[2] === c2[2]
                             ) {yes = false}
                         })
-                    } else { yes = false }
+                    } else yes = false 
                     return yes
                 })
                 const lastOtherLiked = otherLiked.length !== 0 ? otherLiked.pop().value : [-1, -1, -1]

@@ -1,5 +1,5 @@
 
-function rgb2hsv ( rgb ) {
+function rgb2hsv ( rgb = [0, 0, 0] ) {
     var r = rgb[0] / 255 ;
     var g = rgb[1] / 255 ;
     var b = rgb[2] / 255 ;
@@ -27,7 +27,7 @@ function rgb2hsv ( rgb ) {
     return [ h, s, v ] ;
 }
 
-function hsv2rgb ( hsv ) {
+function hsv2rgb ( hsv = [0, 0, 0] ) {
     var h = hsv[0] / 60
 	var s = hsv[1] / 100
 	var v = hsv[2] / 100
