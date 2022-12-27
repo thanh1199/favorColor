@@ -67,6 +67,19 @@ function calcBC ( liked = [
         })
         return yes
     })
+    if (outsideValue.length === 0) {
+        const subOutsideValue = []
+        center.forEach(cen => {
+            calcNeighbor(cen[0], cen[1]).forEach(nei => subOutsideValue.push(nei))
+        })
+        subOutsideValue.filter(nei => {
+            var yes = true
+            center.forEach(cen => {
+                if (cen[0] === nei[0] && cen[1] === nei[1]) yes = false
+            })
+            return yes
+        }).forEach(nei => outsideValue.push(nei))
+    }
 
     const check = []
     outsideValue.forEach((o, i) => {
