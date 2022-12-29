@@ -58,7 +58,7 @@ function calcLog ( centerA = [], centerBC = [], noLike = 0 ) {
         result[2] = v.join(", ")
     }
 
-    if (centerA.length === 1 && centerBC.length === 1) result[3] = "確定"
+    if (h.length < 3 && s.length < 3 && v.length < 3) result[3] = "確定"
     if (noLike > 15) result[3] = "変更中"
     return [...result]
 }
